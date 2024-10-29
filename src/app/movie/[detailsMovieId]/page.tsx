@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import axios from "axios";
-import Layout from "@/components/Layout/Layout";
 import { Video } from "@/types";
+import axios from "axios";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const DetailsMoviePage = () => {
   const pathname = usePathname();
@@ -35,7 +34,7 @@ const DetailsMoviePage = () => {
   }, [movieId]);
 
   return (
-    <Layout>
+
       <div
         style={{
           backgroundColor: "black",
@@ -62,7 +61,7 @@ const DetailsMoviePage = () => {
           <p style={{ color: "white" }}>Trailer not available</p>
         )}
       </div>
-    </Layout>
+
   );
 };
 
