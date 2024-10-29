@@ -86,7 +86,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
               sx={{
                 color: "white",
                 position: "absolute",
-                left: "0",
+                left: "-25px",
                 top: "0",
                 zIndex: "100",
                 backgroundColor: "rgba(0,0,0,.5)",
@@ -105,6 +105,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
               flexDirection: "row",
               padding: { xs: "3.2rem 6rem 2.2rem", sm: "3.2rem 6rem 12.5rem" },
               overflowX: "auto",
+              overflowY:"hidden",
               marginTop: "-3rem",
               marginLeft: "-3rem",
               "&::-webkit-scrollbar": {

@@ -26,9 +26,9 @@ const Cards = ({
   const [error, setError] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const router = useRouter();
-  const { title, poster_path, vote_average, genre_ids, id } = item;
+  const { title, vote_average, genre_ids, id, backdrop_path } = item;
   const { setModalData, setIsModal } = useContext(ModalContext);
-  const image = `https://image.tmdb.org/t/p/original${poster_path}`;
+  const image = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
   useEffect(() => {
     setIsMounted(true);
@@ -145,6 +145,7 @@ const Cards = ({
             objectFit: "cover",
             width: "100%",
             height: "100%",
+            objectPosition: "top",
           }}
         />
       )}
