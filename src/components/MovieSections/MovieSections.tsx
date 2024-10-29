@@ -118,7 +118,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
                   item.poster_path !== null && item.backdrop_path !== null
               )
               .map((item, index) => (
-                <Cards key={index} item={item} />
+                <Cards key={index} item={item} enableGenres={false}/>
               ))}
           </Box>
           <Button

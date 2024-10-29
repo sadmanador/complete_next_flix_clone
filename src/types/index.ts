@@ -33,8 +33,10 @@ export type ButtonProps = {
 };
 export type CardsProps = {
   defaultCard?: boolean;
+  removeMovie?: (id: number) => void;
   item: Media;
   mediaType?: string;
+  enableGenres: boolean;
 };
 
 export enum MediaType {
@@ -57,9 +59,9 @@ export type Media = {
   overview: string;
   popularity: number;
   poster_path: string;
-  release_date: string,
+  release_date: string;
   title: string;
-  video: boolean,
+  video: boolean;
   vote_average: number;
   vote_count: number;
   key?: string;

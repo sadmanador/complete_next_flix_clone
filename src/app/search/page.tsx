@@ -90,7 +90,7 @@ const SearchPage = () => {
                   movie.poster_path !== null && movie.backdrop_path !== null
               )
               .map((movie) => (
-                <Cards key={movie.id} item={movie} />
+                <Cards key={movie.id} item={movie} enableGenres={false}/>
               ))}
           </Box>
         )}

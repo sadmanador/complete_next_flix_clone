@@ -1,49 +1,44 @@
-"use client";
 import { getMovie } from "@/utils/apiService";
 import handleAddToLocalStorage, {
   handleRemoveFromLocalStorage,
   isItemInLocalStorage,
 } from "@/utils/localStorage";
+import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../context/ModalContext";
-import styles from "../../styles/Cards.module.scss";
 import { CardsProps, Genre, Media, MediaItem, Video } from "../../types";
-import {
-  Add,
-  Dislike,
-  Down,
-  Like,
-  Play,
-  Tick,
-  Mute,
-  Unmute,
-} from "../../utils/icons";
+import { Add, Down, Like, Mute, Play, Tick, Unmute } from "../../utils/icons";
 import Button from "../Button/Button";
+import RenderGenre from "../RenderGenre/RenderGenre";
 
 const Cards = ({
-  defaultCard = true,
   item,
+  enableGenres,
+  removeMovie,
 }: CardsProps): React.ReactElement => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [isHovered, setIsHovered] = useState(false);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [isInLocalStorage, setIsInLocalStorage] = useState(false);
-  const [, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const router = useRouter();
+  const { title, poster_path, vote_average, genre_ids, id } = item;
+  const { setModalData, setIsModal } = useContext(ModalContext);
+  const image = `https://image.tmdb.org/t/p/original${poster_path}`;
 
   useEffect(() => {
     setIsMounted(true);
     setIsInLocalStorage(
       isItemInLocalStorage(item.id, item.title ? "movie" : "tv")
     );
-  }, []);
-
-  console.log(item);
+    if (enableGenres) {
+      setGenres(item.genres);
+    }
+  }, [item, enableGenres]);
 
   const handlePlayClick = () => {
     if (item?.id && isMounted) {
@@ -51,50 +46,22 @@ const Cards = ({
     }
   };
 
-  const style = defaultCard ? styles.card : styles.longCard;
-  const infoStyle = defaultCard ? styles.cardInfo : styles.more;
-
-  const { title, poster_path, backdrop_path, vote_average, genre_ids, id } =
-    item;
-
-  const image = defaultCard
-    ? `https://image.tmdb.org/t/p/original${backdrop_path}`
-    : `https://image.tmdb.org/t/p/original${poster_path}`;
-
-  const { setModalData, setIsModal } = useContext(ModalContext);
-
   const onClickModal = (data: Media) => {
     setModalData(data);
     setIsModal(true);
-  };
-
-  const fetchGenres = async () => {
-    const res = await getMovie("/genre/movie/list");
-    if (res.error) {
-      setError(res.error.message);
-    } else {
-      setGenres(res.data?.genres || []);
-    }
-    setLoading(false);
   };
 
   const fetchTrailer = async () => {
     const res = await getMovie(`/movie/${id}/videos`);
     if (res.error) {
       setError(res.error.message);
-      console.log(error);
     } else {
       const trailer = (res.data?.results as unknown as Video[]).find(
         (video) => video.type === "Trailer"
       );
       setTrailerKey(trailer ? trailer.key : null);
     }
-    setLoading(false);
   };
-
-  useEffect(() => {
-    fetchGenres();
-  }, []);
 
   useEffect(() => {
     if (isHovered) {
@@ -102,35 +69,47 @@ const Cards = ({
     }
   }, [isHovered]);
 
-  const handleAddOrRemove = () => {
-    const mediaType = title ? "movie" : "tv";
-    const mediaItem: MediaItem = {
-      id,
-      type: mediaType,
-      title: title,
-    };
-
-    if (isInLocalStorage) {
-      handleRemoveFromLocalStorage(mediaItem);
-    } else {
-      handleAddToLocalStorage(mediaItem);
-    }
-    setIsInLocalStorage(!isInLocalStorage);
-  };
-
   const toggleMute = () => {
     setIsMuted((prev) => !prev);
   };
 
+  const handleFavoriteToggle = () => {
+    const mediaItem: MediaItem = { id, title };
+    if (isInLocalStorage) {
+      handleRemoveFromLocalStorage(mediaItem);
+      setIsInLocalStorage(false);
+      removeMovie(mediaItem.id);
+    } else {
+      handleAddToLocalStorage(mediaItem);
+      setIsInLocalStorage(true);
+    }
+  };
+
   return (
-    <div
-      className={style}
-      style={{ backgroundColor: "#252525" }}
+    <Box
+      sx={{
+        flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        width: "14rem",
+        height: "9rem",
+        borderRadius: "0.28rem",
+        marginRight: "0.3rem",
+        cursor: "pointer",
+        transition: "all 300ms ease",
+        backgroundColor: "#252525",
+        zIndex: isHovered ? 10 : 1,
+        "&:hover": {
+          transform: "scale(1.45)",
+          boxShadow:
+            "0 0 1rem rgba(0, 0, 0, 0.6), 0 6px 6px rgba(0, 0, 0, 0.5)",
+        },
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {isHovered && trailerKey ? (
-        <div className={styles.videoContainer}>
+        <Box sx={{ position: "relative" }}>
           <iframe
             src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=${
               isMuted ? 1 : 0
@@ -138,82 +117,96 @@ const Cards = ({
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className={styles.cardPoster}
+            style={{ width: "100%", height: "100%", borderRadius: "0.28rem" }}
           ></iframe>
-          <div className={styles.muteButton}>
+          <Box
+            sx={{
+              position: "absolute",
+              zIndex: "11",
+              bottom: "10%",
+              right: "5%",
+            }}
+          >
             <Button
               Icon={isMuted ? Mute : Unmute}
               rounded
               onClick={toggleMute}
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
       ) : (
         <Image
+          src={image}
+          alt="Top movie poster"
           width={450}
           height={350}
-          src={image}
-          alt="img"
-          className={styles.cardPoster}
+          style={{
+            borderRadius: "0.28rem",
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+          }}
         />
       )}
-      <div className={infoStyle}>
-        <div className={styles.actionRow}>
-          <div className={styles.actionRow}>
-            <Button Icon={Play} rounded filled onClick={handlePlayClick} />
+
+      <Box
+        sx={{
+          display: isHovered ? "flex" : "none",
+          flexDirection: "column",
+          backgroundColor: "#252525",
+          borderRadius: "0 0 0.28rem 0.28rem",
+          p: "0.4rem",
+          fontSize: "inherit",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex" }}>
+            <Button Icon={Play} rounded onClick={handlePlayClick} />
             <Button
               Icon={isInLocalStorage ? Tick : Add}
               rounded
-              onClick={handleAddOrRemove}
+              onClick={handleFavoriteToggle}
             />
-            {defaultCard && (
-              <>
-                <Button Icon={Like} rounded />
-                <Button Icon={Dislike} rounded />
-              </>
-            )}
-          </div>
+            <Button Icon={Like} rounded />
+          </Box>
+
           <Button Icon={Down} rounded onClick={() => onClickModal(item)} />
-        </div>
-        <div className={styles.textDetails}>
-          <strong>{title}</strong>
-          <div className={styles.row}>
-            <span className={styles.greenText}>{`${Math.round(
-              vote_average * 10
-            )}% match`}</span>
-          </div>
-          {renderGenre(genre_ids, genres)}
-        </div>
-      </div>
-    </div>
+        </Box>
+        <Box>
+          <Typography
+            component="strong"
+            sx={{ color: "white", fontSize: "16px", mt: 1 }}
+          >
+            {title}
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
+            <Typography
+              sx={{
+                color: "success.main",
+                fontWeight: "bold",
+                fontSize: "0.8rem",
+              }}
+            >{`${Math.round(vote_average * 10)}% match`}</Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            {enableGenres ? (
+              <Typography sx={{ fontSize: "12px" }}>
+                {genres.slice(0, 5).map(({ name }, index) => (
+                  <span key={name}>
+                    {name}
+                    {index < genres.length - 1 && <span> &bull; </span>}
+                  </span>
+                ))}
+              </Typography>
+            ) : (
+              <RenderGenre genreIds={genre_ids} />
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
-
-function renderGenre(genre_ids: number[], genres: Genre[]) {
-  const genreMap = genres.reduce(
-    (acc: { [key: number]: string }, genre: Genre) => {
-      acc[genre.id] = genre.name;
-      return acc;
-    },
-    {}
-  );
-
-  const validGenres = genre_ids.filter((id) => genreMap[id]);
-
-  return (
-    <div className={styles.row}>
-      {validGenres.map((id, index) => {
-        const isLast = index === validGenres.length - 1;
-        const genreName = genreMap[id];
-        return (
-          <div key={id} className={styles.row}>
-            <span className={styles.regularText}>{genreName}</span>
-            {!isLast && <div className={styles.dot}>&bull;</div>}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 export default Cards;

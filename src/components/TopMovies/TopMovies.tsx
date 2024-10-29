@@ -6,10 +6,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "../../context/ModalContext";
-import styles from "../../styles/Cards.module.scss";
 import { Media, MediaItem, TopMoviesProps, Video } from "../../types";
 import { Add, Dislike, Down, Like, Play, Tick } from "../../utils/icons";
 import Button from "../Button/Button";
+import { Box, Typography } from "@mui/material";
 
 const TopMovies = ({
   item,
@@ -27,7 +27,6 @@ const TopMovies = ({
 
   useEffect(() => {
     setIsMounted(true);
-
     const existingItems: MediaItem[] = JSON.parse(
       localStorage.getItem("favoriteItems") || "[]"
     );
@@ -45,12 +44,7 @@ const TopMovies = ({
   };
 
   const handleFavoriteToggle = () => {
-    const mediaItem: MediaItem = {
-      id,
-      type: mediaType,
-      title,
-    };
-
+    const mediaItem: MediaItem = { id, type: mediaType, title };
     if (isInLocalStorage) {
       handleRemoveFromLocalStorage(mediaItem);
       setIsInLocalStorage(false);
@@ -83,14 +77,27 @@ const TopMovies = ({
   };
 
   useEffect(() => {
-    if (isHovered) {
-      fetchTrailer();
-    }
+    if (isHovered) fetchTrailer();
   }, [isHovered]);
 
   return (
-    <div
-      className={styles.card}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "14rem",
+        height: "9rem",
+      
+        borderRadius: "0.28rem",
+        marginRight: "0.3rem",
+        cursor: "pointer",
+        transition: "all 300ms ease",
+        "&:hover": {
+          transform: "scale(1.45)",
+          boxShadow:
+            "0 0 1rem rgba(0, 0, 0, 0.6), 0 6px 6px rgba(0, 0, 0, 0.5)",
+        },
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -100,19 +107,34 @@ const TopMovies = ({
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          className={styles.cardPoster}
+          style={{ width: "100%", height: "100%", borderRadius: "0.28rem" }}
         ></iframe>
       ) : (
         <Image
-          width={450}
-          height={350}
           src={image}
           alt="Top movie poster"
-          className={styles.cardPoster}
+          width={450}
+          height={350}
+          style={{
+            borderRadius: "0.28rem",
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+          }}
         />
       )}
-      <div className={styles.cardInfo}>
-        <div className={styles.actionRow}>
+      <Box
+        sx={{
+          display: isHovered ? "flex" : "none",
+          flexDirection: "column",
+          backgroundColor: "#252525",
+          borderRadius: "0 0 0.28rem 0.28rem",
+          p: "0.4rem",
+          fontSize: "inherit",
+          zIndex: "10"
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button Icon={Play} rounded filled onClick={handlePlayClick} />
           <Button
             Icon={isInLocalStorage ? Tick : Add}
@@ -122,19 +144,24 @@ const TopMovies = ({
           <Button Icon={Like} rounded />
           <Button Icon={Dislike} rounded />
           <Button Icon={Down} rounded onClick={() => onClickModal(item)} />
-        </div>
-        <div className={styles.textDetails}>
-          <strong style={{ color: "white", fontSize: "16px" }}>
-            {title}
-          </strong>
-          <div className={styles.row}>
-            <span className={styles.greenText}>{`${Math.round(
-              vote_average * 10
-            )}% match`}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+        </Box>
+        <Typography
+          component="strong"
+          sx={{ color: "white", fontSize: "16px", mt: 1 }}
+        >
+          {title}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
+          <Typography
+            sx={{
+              color: "success.main",
+              fontWeight: "bold",
+              fontSize: "0.8rem",
+            }}
+          >{`${Math.round(vote_average * 10)}% match`}</Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

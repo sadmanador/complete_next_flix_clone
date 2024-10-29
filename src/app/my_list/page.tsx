@@ -1,6 +1,6 @@
 "use client";
+import Cards from "@/components/Cards/Cards";
 import Modal from "@/components/Modal/Modal";
-import TopMovies from "@/components/TopMovies/TopMovies";
 import { ModalContext } from "@/context/ModalContext";
 import { Media, MediaItem } from "@/types";
 import { getMovie } from "@/utils/apiService";
@@ -85,10 +85,11 @@ const MyListPage: React.FC = () => {
             {movies
               .filter((movie) => movie.poster_path !== null)
               .map((movie) => (
-                <TopMovies
+                <Cards
                   key={movie.id}
                   item={movie}
                   removeMovie={removeMovie}
+                  enableGenres={true}
                 />
               ))}
           </Box>

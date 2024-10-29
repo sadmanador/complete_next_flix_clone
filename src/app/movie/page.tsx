@@ -65,7 +65,7 @@ const MoviePage: React.FC = () => {
               {movies
                 .filter((movie) => movie.poster_path !== null)
                 .map((movie) => (
-                  <Cards key={movie.id} item={movie} />
+                  <Cards key={movie.id} item={movie} enableGenres={false}/>
                 ))}
             </Box>
           )}
