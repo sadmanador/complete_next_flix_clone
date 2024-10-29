@@ -32,15 +32,8 @@ const Modal = () => {
   const router = useRouter();
   const [isInLocalStorage, setIsInLocalStorage] = useState(false);
 
-  const {
-    title,
-    poster_path,
-    backdrop_path,
-    vote_average,
-    overview,
-    genre_ids,
-    id,
-  } = modalData as Media;
+  const { title, poster_path, backdrop_path, vote_average, overview, id } =
+    modalData as Media;
 
   function renderGenre(media: Media): string[] {
     const genreNames: string[] = [];
@@ -61,8 +54,6 @@ const Modal = () => {
 
     return genreNames;
   }
-
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -313,7 +304,9 @@ const Modal = () => {
               <Typography>{overview.slice(0, 80)}...</Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
-            <Typography>Genre: {renderGenre(modalData).join(", ")}</Typography>
+              <Typography>
+                Genre: {renderGenre(modalData).join(", ")}
+              </Typography>
             </Box>
           </Box>
           <Typography

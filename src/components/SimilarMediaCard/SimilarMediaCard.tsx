@@ -1,15 +1,12 @@
 import { CardsProps } from "@/types";
 import {
-  Button,
+  Box,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Typography,
-  Box,
+  Typography
 } from "@mui/material";
-import React from "react";
 
 const SimilarMediaCard = ({ item }: CardsProps) => {
   const { title, poster_path, overview, vote_average } = item;

@@ -7,7 +7,15 @@ import { Media } from "@/types";
 import { getMovie } from "@/utils/apiService";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
+import React from "react";
 import { useContext, useEffect, useState } from "react";
+
+// Create a loading fallback component
+const LoadingFallback = () => (
+  <Box display="flex" justifyContent="center">
+    <CircularProgress color="inherit" />
+  </Box>
+);
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
@@ -20,16 +28,23 @@ const SearchPage = () => {
   const loadMovies = async () => {
     if (query) {
       setLoading(true);
-      const res = await getMovie(
-        `/search/movie?query=${encodeURIComponent(query)}`
-      );
-      if (res.error) {
-        setError(res.error.message);
-        console.log("error from search page: ", res.error.message);
-      } else {
+      try {
+        const res = await getMovie(
+          `/search/movie?query=${encodeURIComponent(query)}`
+        );
+
+        if (res.error) {
+          throw new Error(res.error.message);
+        }
+
         setMovies(res.data?.results || []);
+      } catch (err) {
+        const errorMessage = (err as Error).message || "Failed to fetch movies";
+        setError(errorMessage);
+        console.error("Error from search page: ", errorMessage);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
@@ -64,9 +79,7 @@ const SearchPage = () => {
           Top Rated Movies
         </Typography>
         {loading ? (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress color="inherit" />
-          </Box>
+          <LoadingFallback />
         ) : error ? (
           <Typography color="red">{error}</Typography>
         ) : (
@@ -86,4 +99,11 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+// Wrap SearchPage in Suspense in the parent component or in the route
+export default function PageWrapper() {
+  return (
+    <React.Suspense fallback={<LoadingFallback />}>
+      <SearchPage />
+    </React.Suspense>
+  );
+}
