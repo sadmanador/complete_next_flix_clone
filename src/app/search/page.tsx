@@ -72,7 +72,7 @@ const SearchPage = () => {
             marginBottom: ".85rem",
           }}
         >
-          Top Rated Movies
+          More to explore:
         </Typography>
         {loading ? (
           <LoadingFallback />

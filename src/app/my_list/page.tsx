@@ -54,7 +54,7 @@ const MyListPage: React.FC = () => {
         display="flex"
         flexDirection="column"
         p={2}
-        bgcolor="black"
+        bgcolor="#141414"
         sx={{ textTransform: "capitalize" }}
       >
         <Typography

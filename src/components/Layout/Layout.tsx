@@ -16,7 +16,7 @@ const Layout = ({ children }: ChildrenProvider) => {
       }}
     >
       <Navbar />
-      <Box sx={{ marginLeft: "0.8rem" }}>{children}</Box>
+      <Box>{children}</Box>
       <Footer />
     </Box>
   );

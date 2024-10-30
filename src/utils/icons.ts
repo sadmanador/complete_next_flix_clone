@@ -19,8 +19,17 @@ import {
 } from "react-icons/ai";
 import { GoMute as Mute, GoUnmute as Unmute } from "react-icons/go";
 import { FaAngleRight as Next, FaAngleLeft as Previous } from "react-icons/fa6";
-import { MdNoAdultContent as Adult, MdHd as HD, MdClose as Close } from "react-icons/md";
+import {
+  MdNoAdultContent as Adult,
+  MdHd as HD,
+  MdClose as Close,
+} from "react-icons/md";
 import { TbRating12Plus as Rating } from "react-icons/tb";
+import {
+  FaFacebookF as FB,
+  FaInstagram as Instagram,
+  FaYoutube as Youtube,
+} from "react-icons/fa";
 
 export {
   Info,
@@ -43,5 +52,8 @@ export {
   Adult,
   Rating,
   HD,
-  Close
+  Close,
+  FB,
+  Instagram,
+  Youtube,
 };

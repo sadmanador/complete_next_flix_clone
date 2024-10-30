@@ -70,7 +70,6 @@ const Banner: React.FC = () => {
         sx={{
           position: "relative",
           width: "100%",
-          height: { xs: "64vh", md: "88vh" },
         }}
       >
         {trailerKey ? (
@@ -87,16 +86,25 @@ const Banner: React.FC = () => {
               src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=${
                 isMuted ? 1 : 0
               }&controls=0&loop=1&modestbranding=1&showinfo=0`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media;"
               allowFullScreen
               style={{
                 position: "absolute",
-                top: 0,
-                left: 0,
+                top: "50%",
+                left: "50%",
                 width: "100%",
                 height: "100%",
+                transform: "translate(-50%, -50%) scale(1.2)", // Scale to fill without bars
                 border: "none",
                 display: "block",
+              }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: "15%",
+                inset: 0,
+                backgroundImage: "linear-gradient(to top, black, transparent)",
               }}
             />
             <Box
@@ -146,8 +154,9 @@ const Banner: React.FC = () => {
         )}
         <Box
           sx={{
+            zIndex: 1,
             position: "absolute",
-            zIndex: 10,
+            bottom: { xs: "1rem", md: "15%" },
             width: { xs: "75%", md: "35%" },
             marginLeft: { xs: 0, md: "3.5rem" },
             display: "flex",
@@ -155,7 +164,6 @@ const Banner: React.FC = () => {
             justifyContent: { xs: "center", md: "flex-end" },
             textAlign: { xs: "center", md: "left" },
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.45)",
-            bottom: { xs: "2rem", md: "25%" },
           }}
         >
           <Typography
@@ -163,7 +171,7 @@ const Banner: React.FC = () => {
             sx={{
               fontWeight: 600,
               padding: "0.4rem",
-              fontSize: { xs: "2.2rem", md: "2.8rem" },
+              fontSize: { xs: "1.5rem", md: "2rem", lg: "2.8rem" },
             }}
           >
             {media?.title}
@@ -172,7 +180,6 @@ const Banner: React.FC = () => {
             sx={{
               fontWeight: 400,
               padding: "0.3rem",
-              display: "-webkit-box",
               WebkitLineClamp: 3,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
@@ -184,7 +191,7 @@ const Banner: React.FC = () => {
           </Typography>
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "block", md: "flex" },
               flexDirection: "row",
               gap: "10px",
               margin: "0.3rem 0",

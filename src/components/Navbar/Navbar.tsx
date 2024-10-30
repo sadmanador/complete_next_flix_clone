@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import * as React from "react";
+import React from "react";
 
 const pages = ["Home", "Movie", "My List"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -111,7 +111,9 @@ const Navbar = () => {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
             >
               {pages.map((page) => (
                 <MenuItem
@@ -129,7 +131,7 @@ const Navbar = () => {
                       passHref
                       style={{
                         textDecoration: "none",
-                        color: "#ffffff",
+                        color: "black",
                       }}
                     >
                       <Box sx={menuItemStyles}>{page}</Box>
@@ -167,6 +169,7 @@ const Navbar = () => {
               size="small"
               variant="outlined"
               value={searchQuery}
+              placeholder="Search"
               onChange={handleChange}
               onKeyPress={handleSearchKeyPress}
               InputProps={{
@@ -181,7 +184,7 @@ const Navbar = () => {
                     style={{ display: showClearIcon }}
                     onClick={handleClick}
                   >
-                    <ClearIcon sx={{ color: "#ffffff80" }} />
+                    <ClearIcon sx={{ color: "#ffffff80", cursor: "pointer" }} />
                   </InputAdornment>
                 ),
                 style: { color: "#FFFFFF" },

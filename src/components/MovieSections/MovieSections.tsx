@@ -2,7 +2,7 @@ import Cards from "@/components/Cards/Cards";
 import { Media, MovieSectionProps } from "@/types";
 import { getMovie } from "@/utils/apiService";
 import { Next, Previous } from "@/utils/icons";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 export const MovieSections: React.FC<MovieSectionProps> = ({
@@ -56,7 +56,8 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
         display: "flex",
         flexDirection: "column",
         textTransform: "capitalize",
-        marginTop: { xs: 0, sm: "-9rem" },
+        marginTop: "-9rem",
+        zIndex: "-1",
       }}
     >
       <Typography
@@ -66,14 +67,14 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
           marginLeft: "3rem",
           padding: "0.5rem 0",
           width: "fit-content",
-          zIndex: 1,
           marginBottom: ".85rem",
+          zIndex: "1",
         }}
       >
         {heading}
       </Typography>
       {loading ? (
-        <div>Loading...</div>
+        <CircularProgress />
       ) : error ? (
         <div>{error}</div>
       ) : (
@@ -99,13 +100,13 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
           )}
           <Box
             className="scroll-container"
-            onScroll={handleScroll} // Attach onScroll handler
+            onScroll={handleScroll}
             sx={{
               display: "flex",
               flexDirection: "row",
-              padding: { xs: "3.2rem 6rem 2.2rem", sm: "3.2rem 6rem 12.5rem" },
+              padding: { xs: "3.2rem 6rem 12.5rem" },
               overflowX: "auto",
-              overflowY:"hidden",
+              overflowY: "hidden",
               marginTop: "-3rem",
               marginLeft: "-3rem",
               "&::-webkit-scrollbar": {
@@ -119,7 +120,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
                   item.poster_path !== null && item.backdrop_path !== null
               )
               .map((item, index) => (
-                <Cards key={index} item={item} enableGenres={false}/>
+                <Cards key={index} item={item} enableGenres={false} />
               ))}
           </Box>
           <Button
@@ -129,7 +130,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
               position: "absolute",
               right: "0",
               top: "0",
-              zIndex: "100",
+              zIndex: "10",
               backgroundColor: "rgba(0,0,0,.5)",
               padding: "3.7rem 1rem",
               fontSize: "2rem",

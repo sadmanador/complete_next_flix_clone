@@ -1,5 +1,4 @@
 import { MediaItem } from "@/types";
-import Swal from "sweetalert2";
 
 export default function handleAddToLocalStorage(item: MediaItem) {
   const existingItems: MediaItem[] = JSON.parse(
@@ -11,29 +10,9 @@ export default function handleAddToLocalStorage(item: MediaItem) {
       existingItem.id === item.id && existingItem.type === item.type
   );
 
-  if (isAlreadyInList) {
-    Swal.fire({
-      icon: "warning",
-      title: `${item.title} is already in your list`,
-      showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        popup: "small-swal-popup",
-      },
-    });
-  } else {
+  if (!isAlreadyInList) {
     existingItems.push(item);
     localStorage.setItem("favoriteItems", JSON.stringify(existingItems));
-
-    Swal.fire({
-      icon: "success",
-      title: `${item.title} is added to your list`,
-      showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        popup: "small-swal-popup",
-      },
-    });
   }
 }
 
@@ -48,16 +27,6 @@ export function handleRemoveFromLocalStorage(item: MediaItem) {
   );
 
   localStorage.setItem("favoriteItems", JSON.stringify(updatedItems));
-
-  Swal.fire({
-    icon: "info",
-    title: `${item.title} has been removed from your list`,
-    showConfirmButton: false,
-    timer: 1500,
-    customClass: {
-      popup: "small-swal-popup",
-    },
-  });
 }
 
 export function isItemInLocalStorage(id: number, type: string): boolean {

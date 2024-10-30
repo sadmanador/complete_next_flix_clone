@@ -26,46 +26,45 @@ const MoviePage: React.FC = () => {
 
   return (
     <>
-        <Box
-          display="flex"
-          flexDirection="column"
-          p={2}
-          bgcolor="black"
+      <Box
+        display="flex"
+        flexDirection="column"
+        p={2}
+        sx={{
+          textTransform: "capitalize",
+          marginTop: { xs: 0, sm: 2 },
+          backgroundColor: "#141414",
+        }}
+      >
+        <Typography
+          component="strong"
           sx={{
-            textTransform: "capitalize",
-            marginTop: { xs: 0, sm: 2 },
+            fontSize: "1.2rem",
+            marginLeft: "3rem",
+            padding: "0.5rem 0",
+            width: "fit-content",
+            zIndex: 1,
+            marginBottom: ".85rem",
           }}
         >
-          <Typography
-            component="strong"
-            sx={{
-              fontSize: "1.2rem",
-              marginLeft: "3rem",
-              padding: "0.5rem 0",
-              width: "fit-content",
-              zIndex: 1,
-              marginBottom: ".85rem",
-            }}
-          >
-            Top Rated Movies
-          </Typography>
-          {loading ? (
-            <Box display="flex" justifyContent="center">
-              <CircularProgress color="inherit" />
-            </Box>
-          ) : error ? (
-            <Typography color="red">{error}</Typography>
-          ) : (
-            <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
-              {movies
-                .filter((movie) => movie.poster_path !== null)
-                .map((movie) => (
-                  <Cards key={movie.id} item={movie} enableGenres={false}/>
-                ))}
-            </Box>
-          )}
-        </Box>
-
+          Top Rated Movies
+        </Typography>
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress color="inherit" />
+          </Box>
+        ) : error ? (
+          <Typography color="red">{error}</Typography>
+        ) : (
+          <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
+            {movies
+              .filter((movie) => movie.poster_path !== null)
+              .map((movie) => (
+                <Cards key={movie.id} item={movie} enableGenres={false} />
+              ))}
+          </Box>
+        )}
+      </Box>
     </>
   );
 };

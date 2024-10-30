@@ -10,7 +10,7 @@ const Home = () => {
       <Banner />
       <Box
         sx={{
-          minHeight: "100vh",
+          marginTop: "9rem",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#141414",
