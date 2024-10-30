@@ -30,7 +30,7 @@ const SimilarMediaCard = ({ item }: CardsProps) => {
       />
 
       <CardActionArea>
-        <CardMedia component="img" height="140" image={imageUrl} alt={title} />
+        <CardMedia component="img" height="140" image={imageUrl} alt={title} sx={{objectPosition:"top"}} />
         <CardContent
           sx={{ color: "#ffffff80", position: "relative", zIndex: 2 }}
         >
