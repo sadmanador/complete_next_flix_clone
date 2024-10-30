@@ -87,7 +87,6 @@ const Cards = ({
     }
   };
 
-  console.log(item);
 
   return (
     <>
