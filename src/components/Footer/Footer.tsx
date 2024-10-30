@@ -1,13 +1,11 @@
-import React from "react";
-import Image from "next/image";
-import { Box, Typography, Link, Icon } from "@mui/material";
 import {
   Facebook,
   Instagram,
-  Margin,
   Twitter,
-  YouTube,
+  YouTube
 } from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
+import React from "react";
 
 const Footer: React.FC = () => {
   return (
