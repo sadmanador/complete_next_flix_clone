@@ -165,7 +165,7 @@ const ModalComp = ({
               alignItems: "baseline",
             }}
           >
-            <Box sx={{ display: "flex", gap: 2, alignItems: "baseline" }}>
+            <Box sx={{ display: {xs:"block",md:"flex"}, gap: 2, alignItems: "baseline" }}>
               <Link style={{ textDecoration: "none" }} href={`/movie/${id}`}>
                 <Button label="Play" filled Icon={Play} />
               </Link>

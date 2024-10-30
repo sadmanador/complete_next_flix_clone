@@ -41,6 +41,7 @@ const SimilarMediaCard = ({ item }: CardsProps) => {
             sx={{
               color: "#ffffff",
               zIndex: 2,
+              fontWeight: {xs:".85rem",md:"1.5rem"}
             }}
           >
             {title.slice(0, 12)}...
@@ -59,7 +60,7 @@ const SimilarMediaCard = ({ item }: CardsProps) => {
               <Button Icon={Play} rounded />
             </Link>
           </Box>
-          <Typography variant="body2">{overview.slice(0, 100)}. . .</Typography>
+          <Typography variant="body2">{overview.slice(0, 60)}. . .</Typography>
         </CardContent>
       </CardActionArea>
     </Card>

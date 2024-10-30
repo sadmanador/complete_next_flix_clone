@@ -37,7 +37,7 @@ const SimilarMedia = ({ id }: SimilarMediaProps) => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: {xs: "1fr", md:"repeat(2, 3fr)"},
+          gridTemplateColumns: {xs: "1fr", sm:"repeat(2, 3fr)",  md:"repeat(3, 3fr)"},
           gap: "12px",
         }}
       >
