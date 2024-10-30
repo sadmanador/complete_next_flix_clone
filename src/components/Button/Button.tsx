@@ -17,6 +17,7 @@ const Button = (props: ButtonProps): React.ReactElement | null => {
       component="button"
       onClick={onClick}
       sx={{
+        
         zIndex: 10,
         color: fontColor,
         backgroundColor: backgroundColor,

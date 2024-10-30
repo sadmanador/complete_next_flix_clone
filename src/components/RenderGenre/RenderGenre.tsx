@@ -14,7 +14,7 @@ const RenderGenre: React.FC<RenderGenreProps> = ({ genreIds }) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-      <Typography sx={{ fontSize: "12px" }}>
+      <Typography sx={{ fontSize: "10px", color: "#e5e5e5" }}>
         {genreNames.join(" • ")} {/* Using the bullet character for separation */}
       </Typography>
     </Box>

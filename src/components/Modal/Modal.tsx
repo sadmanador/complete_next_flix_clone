@@ -1,116 +1,51 @@
-import { getMovie } from "@/utils/apiService";
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, IconButton, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Modal, Typography } from "@mui/material";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import { ModalContext } from "../../context/ModalContext";
-import { Genre, Media, MediaItem, Video } from "../../types";
+import Link from "next/link";
+import Button from "../Button/Button";
+import RenderGenre from "../RenderGenre/RenderGenre";
+import SimilarMedia from "../SimilarMedia/SimilarMedia";
+import { MediaItem, ModalProps, Video } from "@/types";
+import { getMovie } from "@/utils/apiService";
 import {
   Add,
+  Adult,
   Dislike,
   Like,
-  Play,
   Mute,
-  Unmute,
+  Play,
   Tick,
-} from "../../utils/icons";
-import Button from "../Button/Button";
-import SimilarMedia from "../SimilarMedia/SimilarMedia";
+  Unmute,
+  HD,
+  Close,
+} from "@/utils/icons";
 import handleAddToLocalStorage, {
   handleRemoveFromLocalStorage,
 } from "@/utils/localStorage";
 
-const Modal = () => {
-  const [genres, setGenres] = useState<Genre[]>([]);
+const ModalComp = ({
+  modalOpen,
+  handleClose,
+  modalData,
+  enableGenres,
+}: ModalProps): React.ReactElement => {
   const [, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const { modalData, setIsModal, isModal } = useContext(ModalContext);
-  const [isMounted, setIsMounted] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
-  const router = useRouter();
+  const {
+    id,
+    backdrop_path,
+    title,
+    overview,
+    vote_average,
+    genres,
+    genre_ids,
+    release_date,
+    adult,
+  } = modalData;
   const [isInLocalStorage, setIsInLocalStorage] = useState(false);
 
-  const { title, poster_path, backdrop_path, vote_average, overview, id } =
-    modalData as Media;
-
-  function renderGenre(media: Media): string[] {
-    const genreNames: string[] = [];
-    if (media.genres && media.genres.length > 0) {
-      genreNames.push(...media.genres.map((genre) => genre.name));
-    } else if (media.genre_ids && media.genre_ids.length > 0) {
-      const genreMap = genres.reduce(
-        (acc: { [key: number]: string }, genre: Genre) => {
-          acc[genre.id] = genre.name;
-          return acc;
-        },
-        {}
-      );
-      genreNames.push(
-        ...media.genre_ids.map((id) => genreMap[id]).filter((name) => name)
-      );
-    }
-
-    return genreNames;
-  }
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const handlePlayClick = () => {
-    if (id && isMounted) {
-      router.push(`/movie/${id}`);
-    }
-  };
-
-  const banner = backdrop_path
-    ? `https://image.tmdb.org/t/p/original${backdrop_path}`
-    : `https://image.tmdb.org/t/p/original${poster_path}`;
-
-  const fetchTrailer = async () => {
-    const res = await getMovie(`/movie/${id}/videos`);
-    const trailer = (res.data?.results as unknown as Video[])?.find(
-      (video) => video.type === "Trailer" && video.site === "YouTube"
-    );
-    setTrailerUrl(
-      trailer
-        ? `https://www.youtube.com/embed/${
-            trailer.key
-          }?autoplay=1&controls=0&mute=${isMuted ? 1 : 0}`
-        : null
-    );
-    setLoading(false);
-  };
-
-  const fetchGenres = async () => {
-    const res = await getMovie("/genre/movie/list");
-    if (res.error) {
-      setError(res.error.message);
-      console.log(error);
-    } else {
-      setGenres(res.data?.genres || []);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchTrailer();
-    fetchGenres();
-  }, [id, isMuted]);
-
-  useEffect(() => {
-    if (isModal) {
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.classList.remove("modal-open");
-    }
-
-    return () => {
-      document.body.classList.remove("modal-open");
-    };
-  }, [isModal]);
+  const banner = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
   const handleAddOrRemove = () => {
     const mediaType = title ? "movie" : "tv";
@@ -128,55 +63,79 @@ const Modal = () => {
     setIsInLocalStorage(!isInLocalStorage);
   };
 
-  const toggleMute = () => {
-    setIsMuted((prev) => !prev);
+  const fetchTrailer = async () => {
+    const res = await getMovie(`/movie/${id}/videos`);
+    const trailer = (res.data?.results as unknown as Video[])?.find(
+      (video) => video.type === "Trailer" && video.site === "YouTube"
+    );
+    setTrailerUrl(
+      trailer
+        ? `https://www.youtube.com/embed/${
+            trailer.key
+          }?autoplay=1&controls=0&mute=${isMuted ? 1 : 0}`
+        : null
+    );
+    setLoading(false);
   };
 
+  const toggleMute = () => {
+    setIsMuted((prev) => {
+      const newMutedState = !prev;
+      if (trailerUrl) {
+        setTrailerUrl(
+          trailerUrl.replace(
+            `mute=${prev ? 1 : 0}`,
+            `mute=${newMutedState ? 1 : 0}`
+          )
+        );
+      }
+      return newMutedState;
+    });
+  };
+
+  useEffect(() => {
+    fetchTrailer();
+  }, [id, isMuted]);
+
   return (
-    <Box
+    <Modal
+      open={modalOpen}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
       sx={{
-        position: "fixed",
-        display: isModal ? "flex" : "none",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1300,
-        width: "100vw",
-        top: "10%",
-        left: 0,
+        marginTop: "2rem",
+        overflow: "auto",
       }}
     >
       <Box
         sx={{
-          width: "100vw",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 1,
-        }}
-        onClick={() => setIsModal(false)}
-      />
-      <Box
-        sx={{
-          backgroundColor: "#252525",
-          color: "white",
-          zIndex: 2,
-          minWidth: "55%",
-          maxWidth: { xs: "90%", md: "70%", lg: "60%" },
-          position: "relative",
-          borderRadius: "8px",
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          overflow: "scroll",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "#141414",
+          boxShadow: 24,
+          height: "65vh",
+          borderRadius: 1,
+          outline: "none",
         }}
       >
         <Box
+          onClick={handleClose}
           sx={{
-            position: "relative",
-            flex: 1,
+            position: "absolute",
+            top: "8px",
+            right: "8px",
+            cursor: "pointer",
+            color: "#ffffff",
+            zIndex: 1,
           }}
         >
+          <Close fontSize="30px" />
+        </Box>
+
+        <Box sx={{ position: "relative" }}>
           {trailerUrl ? (
             <iframe
               width="100%"
@@ -197,132 +156,117 @@ const Modal = () => {
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
           )}
-
           <Box
             sx={{
+              p: 6,
+              display: "flex",
               position: "absolute",
-              bottom: 0,
-              right: 0,
-              width: "100%",
-              height: "100%",
-              backgroundImage:
-                "linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 80%)",
+              bottom: "0",
+              alignItems: "baseline",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 2, alignItems: "baseline" }}>
+              <Link style={{ textDecoration: "none" }} href={`/movie/${id}`}>
+                <Button label="Play" filled Icon={Play} />
+              </Link>
+              <Button
+                Icon={isInLocalStorage ? Tick : Add}
+                rounded
+                onClick={handleAddOrRemove}
+              />
+              <Button Icon={Like} rounded />
+              <Button Icon={Dislike} rounded />
+            </Box>
+          </Box>
+          <Box sx={{ position: "absolute", right: "0", bottom: "0", p: 6 }}>
+            <Button
+              Icon={isMuted ? Mute : Unmute}
+              rounded
+              onClick={toggleMute}
+            />
+          </Box>
+        </Box>
+
+        <Box sx={{ backgroundColor: "#141414", p: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
             }}
           >
             <Box
               sx={{
-                padding: "2rem 3rem",
-                position: "absolute",
-                bottom: 16,
-                left: 16,
+                display: { xs: "block", md: "flex" },
+                alignItems: "baseline",
+                gap: { xs: "2px", md: "10px" },
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                {title}
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "125%",
-                }}
+              <Typography
+                sx={{ color: "success.main", fontWeight: "bold", mt: 1 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                    mt: 2,
-                    alignItems: "baseline",
-                  }}
-                >
-                  <Button
-                    label="Play"
-                    filled
-                    Icon={Play}
-                    onClick={handlePlayClick}
-                  />
-                  <Button
-                    Icon={isInLocalStorage ? Tick : Add}
-                    rounded
-                    onClick={handleAddOrRemove}
-                  />
-                  <Button Icon={Like} rounded />
-                  <Button Icon={Dislike} rounded />
-                </Box>
-                <Box sx={{}}>
-                  <Button
-                    Icon={isMuted ? Mute : Unmute}
-                    rounded
-                    onClick={toggleMute}
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <IconButton
-          onClick={() => setIsModal(false)}
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
-            borderRadius: "50%",
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <Box
-          sx={{
-            overflowY: "auto",
-            padding: "0rem 3rem",
-            backgroundColor: "#252525",
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography
-              sx={{
-                color: "success.main",
-                fontWeight: "bold",
-                mt: 1,
-                padding: "0rem 3rem",
-              }}
-            >
-              {Math.round(vote_average * 10)}% Match
-            </Typography>
-            <Button Icon={Play} rounded onClick={handlePlayClick} />
-          </Box>
-          <Box
-            sx={{
-              padding: "2rem 3rem",
-              display: "flex",
-              flexDirection: "row",
-              gap: 4,
-            }}
-          >
-            <Box sx={{ flex: 1 }}>
-              <Typography>{overview.slice(0, 80)}...</Typography>
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <Typography>
-                Genre: {renderGenre(modalData).join(", ")}
+                {Math.round(vote_average * 10)}% Match
               </Typography>
+              <Typography sx={{ fontSize: "15px", color: "#e5e5e5" }}>
+                {release_date}
+              </Typography>
+              {adult && <Button Icon={Adult} rounded />}
+              <Typography
+                sx={{ border: "2px solid #e5e5e5", color: "#e5e5e5" }}
+              >
+                12+
+              </Typography>
+              <Typography
+                sx={{ fontSize: "16px", color: "#e5e5e5", fontWeight: "bold" }}
+              >
+                120m
+              </Typography>
+              <HD
+                style={{
+                  fontSize: "20px",
+                  color: "#e5e5e5",
+                }}
+              />
+            </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography sx={{ fontSize: "10px", mr: 1, color: "#e5e5e5" }}>
+                Genres:
+              </Typography>
+              {enableGenres ? (
+                <Typography sx={{ fontSize: "15px", color: "#e5e5e5" }}>
+                  {genres?.slice(0, 5).map(({ name }, index) => (
+                    <span key={name}>
+                      {name}
+                      {index < genres.length - 1 && <span> &bull; </span>}
+                    </span>
+                  ))}
+                </Typography>
+              ) : (
+                <RenderGenre genreIds={genre_ids} />
+              )}
             </Box>
           </Box>
           <Typography
+            id="modal-modal-description"
+            sx={{ my: 2, color: "#ffffff80" }}
+          >
+            {overview}
+          </Typography>
+          <Typography
             sx={{
               fontWeight: "bold",
-              padding: "0rem 3rem",
+              color: "#e5e5e5",
+              fontSize: "1.3rem",
             }}
           >
-            Similar
+            More movies like this
           </Typography>
 
           <SimilarMedia id={id} />
         </Box>
       </Box>
-    </Box>
+    </Modal>
   );
 };
 
-export default Modal;
+export default ModalComp;

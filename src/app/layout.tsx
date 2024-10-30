@@ -1,9 +1,8 @@
+import Layout from "@/components/Layout/Layout";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import { ModalProvider } from "@/context/ModalContext";
 import Head from "next/head";
-import Layout from "@/components/Layout/Layout";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,9 +34,7 @@ const RootLayout = ({
         <title>Next Flix</title>
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ModalProvider>
-          <Layout>{children}</Layout>
-        </ModalProvider>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );

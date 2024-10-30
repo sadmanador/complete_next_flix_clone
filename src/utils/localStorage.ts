@@ -6,18 +6,35 @@ export default function handleAddToLocalStorage(item: MediaItem) {
     localStorage.getItem("favoriteItems") || "[]"
   );
 
-  existingItems.push(item);
-  localStorage.setItem("favoriteItems", JSON.stringify(existingItems));
+  const isAlreadyInList = existingItems.some(
+    (existingItem) =>
+      existingItem.id === item.id && existingItem.type === item.type
+  );
 
-  Swal.fire({
-    icon: "success",
-    title: `${item.title} is added to your my list`,
-    showConfirmButton: false,
-    timer: 1500,
-    customClass: {
-      popup: "small-swal-popup",
-    },
-  });
+  if (isAlreadyInList) {
+    Swal.fire({
+      icon: "warning",
+      title: `${item.title} is already in your list`,
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        popup: "small-swal-popup",
+      },
+    });
+  } else {
+    existingItems.push(item);
+    localStorage.setItem("favoriteItems", JSON.stringify(existingItems));
+
+    Swal.fire({
+      icon: "success",
+      title: `${item.title} is added to your list`,
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        popup: "small-swal-popup",
+      },
+    });
+  }
 }
 
 export function handleRemoveFromLocalStorage(item: MediaItem) {

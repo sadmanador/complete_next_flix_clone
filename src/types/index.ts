@@ -36,7 +36,7 @@ export type CardsProps = {
   removeMovie?: (id: number) => void;
   item: Media;
   mediaType?: string;
-  enableGenres: boolean;
+  enableGenres?: boolean;
 };
 
 export enum MediaType {
@@ -131,11 +131,11 @@ export type TopMoviesProps = {
   removeMovie: (id: number) => void;
 };
 
-export type Modal = {
+export type ModalProps = {
   modalData: Media;
-  setModalData: (item: Media) => void;
-  isModal: boolean;
-  setIsModal: (isModal: boolean) => void;
+  modalOpen: boolean;
+  enableGenres: boolean;
+  handleClose: () => void;
 };
 
 export type AudioControl = {

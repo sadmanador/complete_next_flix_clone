@@ -1,14 +1,12 @@
 "use client";
 import Cards from "@/components/Cards/Cards";
-import Modal from "@/components/Modal/Modal";
-import { ModalContext } from "@/context/ModalContext";
 import { Media, MediaItem } from "@/types";
 import { getMovie } from "@/utils/apiService";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MyListPage: React.FC = () => {
-  const { isModal } = useContext(ModalContext);
+
   const [movies, setMovies] = useState<Media[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +50,7 @@ const MyListPage: React.FC = () => {
 
   return (
     <>
-      {isModal && <Modal />}
+
       <Box
         display="flex"
         flexDirection="column"

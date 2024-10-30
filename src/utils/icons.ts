@@ -18,8 +18,9 @@ import {
   AiOutlineDislike as Dislike,
 } from "react-icons/ai";
 import { GoMute as Mute, GoUnmute as Unmute } from "react-icons/go";
-import { FaAngleRight as Next,FaAngleLeft as Previous } from "react-icons/fa6";
-
+import { FaAngleRight as Next, FaAngleLeft as Previous } from "react-icons/fa6";
+import { MdNoAdultContent as Adult, MdHd as HD, MdClose as Close } from "react-icons/md";
+import { TbRating12Plus as Rating } from "react-icons/tb";
 
 export {
   Info,
@@ -38,5 +39,9 @@ export {
   Mute,
   Unmute,
   Next,
-  Previous
+  Previous,
+  Adult,
+  Rating,
+  HD,
+  Close
 };

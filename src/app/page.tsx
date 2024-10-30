@@ -1,19 +1,12 @@
 "use client";
 import Banner from "@/components/Banner/Banner";
-import Modal from "@/components/Modal/Modal";
 import { MovieSections } from "@/components/MovieSections/MovieSections";
-import { ModalContext } from "@/context/ModalContext";
 import { Section } from "@/types";
 import { Box } from "@mui/material";
-import { useContext } from "react";
 
 const Home = () => {
-  const { isModal } = useContext(ModalContext);
-
   return (
     <>
-      {isModal && <Modal />}
-
       <Banner />
       <Box
         sx={{
