@@ -67,8 +67,8 @@ const Navbar = () => {
     if (event.key === "Enter" && searchQuery.trim()) {
       event.preventDefault();
       router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery("");
-      setShowClearIcon("none");
+      // setSearchQuery("");
+      // setShowClearIcon("none");
     }
   };
 
@@ -200,7 +200,11 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src="/assets/avatar.png" />
+                <Avatar
+                  alt="User Avatar"
+                  src="/assets/avatar.png"
+                  sx={{ borderRadius: "5px", width: 40, height: 40 }}
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -220,11 +224,7 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={handleCloseUserMenu}
-                  sx={{ borderRadius: 0 }}
-                >
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography sx={{ textAlign: "center" }}>
                     {setting}
                   </Typography>

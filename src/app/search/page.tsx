@@ -25,23 +25,15 @@ const SearchPage = () => {
   const loadMovies = async () => {
     if (query) {
       setLoading(true);
-      try {
-        const res = await getMovie(
-          `/search/movie?query=${encodeURIComponent(query)}`
-        );
-
-        if (res.error) {
-          throw new Error(res.error.message);
-        }
-
+      const res = await getMovie(
+        `/search/movie?query=${encodeURIComponent(query)}`
+      );
+      if (res.error) {
+        setError(res.error.message);
+      } else {
         setMovies(res.data?.results || []);
-      } catch (err) {
-        const errorMessage = (err as Error).message || "Failed to fetch movies";
-        setError(errorMessage);
-        console.error("Error from search page: ", errorMessage);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     }
   };
 
