@@ -1,27 +1,8 @@
-import { MoviesResponse } from "@/types";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { ApiResponse, AxiosErrorType, MoviesResponse } from "@/types";
+import { AxiosRequestConfig } from "axios";
 import getInstance from "./axio";
 
-export type AxiosErrorType = {
-  code?: string;
-  config: AxiosRequestConfig;
-  message: string;
-  name: string;
-  request?: XMLHttpRequest;
-  response?: AxiosResponse;
-  status?: number;
-  stack?: string;
-};
 
-export interface RequestError extends Error {
-  status?: number;
-  details?: unknown;
-}
-
-interface ApiResponse<T> {
-  data?: T;
-  error?: RequestError | undefined;
-}
 
 const getRequest = async <T>(
   url: string,

@@ -1,21 +1,17 @@
 import React from "react";
 import GenreLibrary from "@/utils/genre_id";
 import { Box, Typography } from "@mui/material";
-
-interface RenderGenreProps {
-  genreIds: number[];
-}
+import { RenderGenreProps } from "@/types";
 
 const RenderGenre: React.FC<RenderGenreProps> = ({ genreIds }) => {
-  // Get the names of the genres based on genreIds
   const genreNames = genreIds
     .map((id) => GenreLibrary.find((genre) => genre.id === id)?.name)
-    .filter((name): name is string => name !== undefined); // Filter out any undefined values
+    .filter((name): name is string => name !== undefined);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
       <Typography sx={{ fontSize: "10px", color: "#e5e5e5" }}>
-        {genreNames.join(" • ")} {/* Using the bullet character for separation */}
+        {genreNames.join(" • ")}{" "}
       </Typography>
     </Box>
   );
