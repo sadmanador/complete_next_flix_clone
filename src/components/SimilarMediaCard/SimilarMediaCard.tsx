@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import Button from "../Button/Button";
 
-const SimilarMediaCard = ({ item }: CardsProps) => {
+const SimilarMediaCard: React.FC<CardsProps> = ({ item }) => {
   const { id, title, poster_path, overview, vote_average } = item;
 
   const imageUrl = `https://image.tmdb.org/t/p/original${poster_path}`;
@@ -30,7 +30,13 @@ const SimilarMediaCard = ({ item }: CardsProps) => {
       />
 
       <CardActionArea>
-        <CardMedia component="img" height="140" image={imageUrl} alt={title} sx={{objectPosition:"top"}} />
+        <CardMedia
+          component="img"
+          height="140"
+          image={imageUrl}
+          alt={title}
+          sx={{ objectPosition: "top" }}
+        />
         <CardContent
           sx={{ color: "#ffffff80", position: "relative", zIndex: 2 }}
         >
@@ -41,7 +47,7 @@ const SimilarMediaCard = ({ item }: CardsProps) => {
             sx={{
               color: "#ffffff",
               zIndex: 2,
-              fontWeight: {xs:".85rem",md:"1.5rem"}
+              fontWeight: { xs: ".85rem", md: "1.5rem" },
             }}
           >
             {title.slice(0, 12)}...

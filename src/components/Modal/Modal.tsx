@@ -23,12 +23,12 @@ import handleAddToLocalStorage, {
   handleRemoveFromLocalStorage,
 } from "@/utils/localStorage";
 
-const ModalComp = ({
+const ModalComp: React.FC<ModalProps> = ({
   modalOpen,
   handleClose,
   modalData,
   enableGenres,
-}: ModalProps): React.ReactElement => {
+}): React.ReactElement => {
   const [, setLoading] = useState(true);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -103,7 +103,6 @@ const ModalComp = ({
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      
       sx={{
         marginTop: "2rem",
         overflow: "auto",
@@ -169,8 +168,8 @@ const ModalComp = ({
           >
             <Box
               sx={{
-                display:  "flex" ,
-                gap: {md:2},
+                display: "flex",
+                gap: { md: 2 },
                 alignItems: "baseline",
               }}
             >
@@ -186,7 +185,14 @@ const ModalComp = ({
               <Button Icon={Dislike} rounded />
             </Box>
           </Box>
-          <Box sx={{ position: "absolute", right: "0", bottom: "0", p: {xs:2, md:6} }}>
+          <Box
+            sx={{
+              position: "absolute",
+              right: "0",
+              bottom: "0",
+              p: { xs: 2, md: 6 },
+            }}
+          >
             <Button
               Icon={isMuted ? Mute : Unmute}
               rounded

@@ -13,11 +13,7 @@ import Button from "../Button/Button";
 import ModalComp from "../Modal/Modal";
 import RenderGenre from "../RenderGenre/RenderGenre";
 
-const Cards = ({
-  item,
-  enableGenres,
-  removeMovie,
-}: CardsProps): React.ReactElement => {
+const Cards: React.FC<CardsProps> = ({ item, enableGenres, removeMovie }) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [, setError] = useState<string | null>(null);
@@ -27,15 +23,13 @@ const Cards = ({
   const [isMounted, setIsMounted] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [isInLocalStorage, setIsInLocalStorage] = useState(false);
-  
+
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-  
+
   const router = useRouter();
   const { title, vote_average, genre_ids, id, backdrop_path } = item;
   const image = `https://image.tmdb.org/t/p/original${backdrop_path}`;
-
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -90,7 +84,6 @@ const Cards = ({
       setIsInLocalStorage(true);
     }
   };
-
 
   return (
     <>

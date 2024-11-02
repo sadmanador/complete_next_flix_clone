@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import SimilarMediaCard from "../SimilarMediaCard/SimilarMediaCard";
 
-const SimilarMedia = ({ id }: SimilarMediaProps) => {
+const SimilarMedia: React.FC<SimilarMediaProps> = ({ id }) => {
   const [similarMovies, setSimilarMovies] = useState<Media[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,11 +33,15 @@ const SimilarMedia = ({ id }: SimilarMediaProps) => {
   }
 
   return (
-    <Box sx={{ padding: 2, overflowX: "auto", }}>
+    <Box sx={{ padding: 2, overflowX: "auto" }}>
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: {xs: "1fr", sm:"repeat(2, 3fr)",  md:"repeat(3, 3fr)"},
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 3fr)",
+            md: "repeat(3, 3fr)",
+          },
           gap: "12px",
         }}
       >

@@ -4,7 +4,7 @@ import type { ChildrenProvider } from "@/types";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 
-const Layout = ({ children }: ChildrenProvider) => {
+const Layout: React.FC<ChildrenProvider> = ({ children }) => {
   return (
     <Box
       sx={{
