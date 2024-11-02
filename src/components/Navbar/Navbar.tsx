@@ -20,7 +20,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const pages = ["Home", "Movie", "My List"];
+const pages = [
+  "Home",
+  "TV Shows",
+  "Movie",
+  "New & Popular",
+  "My List",
+  "Browse by Languages",
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
@@ -126,7 +133,9 @@ const Navbar = () => {
                       href={
                         page === "Home"
                           ? "/"
-                          : `/${page.toLowerCase().replace(" ", "_")}`
+                          : page === "My List"
+                          ? "/my_list"
+                          : "#" // Placeholder links
                       }
                       passHref
                       style={{
@@ -147,9 +156,7 @@ const Navbar = () => {
               <Link
                 key={page}
                 href={
-                  page === "Home"
-                    ? "/"
-                    : `/${page.toLowerCase().replace(" ", "_")}`
+                  page === "Home" ? "/" : page === "My List" ? "/my_list" : "#"
                 }
                 passHref
                 style={{
