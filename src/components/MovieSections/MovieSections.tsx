@@ -10,9 +10,10 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
   endpoint,
 }) => {
   const [media, setMedia] = useState<Media[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  
+  const [loading, setLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const fetchMovies = async () => {
     const res = await getMovie(`${endpoint}`);
@@ -44,7 +45,6 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
     }
   };
 
-  // New function to handle scroll event and update isScrolled state
   const handleScroll = (event: React.UIEvent<HTMLElement>) => {
     const scrollLeft = (event.target as HTMLElement).scrollLeft;
     setIsScrolled(scrollLeft > 0);
@@ -76,7 +76,7 @@ export const MovieSections: React.FC<MovieSectionProps> = ({
       {loading ? (
         <CircularProgress />
       ) : error ? (
-        <div>{error}</div>
+        <Typography>{error}</Typography>
       ) : (
         <Box
           sx={{ display: "flex", alignItems: "center", position: "relative" }}

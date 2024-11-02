@@ -29,7 +29,7 @@ const ModalComp = ({
   modalData,
   enableGenres,
 }: ModalProps): React.ReactElement => {
-  const [, setLoading] = useState<boolean>(true);
+  const [, setLoading] = useState(true);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const {

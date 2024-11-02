@@ -19,7 +19,7 @@ const SearchPage = () => {
   const query = searchParams.get("query");
 
   const [movies, setMovies] = useState<Media[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadMovies = async () => {
@@ -96,10 +96,11 @@ const SearchPage = () => {
 };
 
 // Wrap SearchPage in Suspense in the parent component or in the route
-export default function PageWrapper() {
+const PageWrapper = () => {
   return (
     <React.Suspense fallback={<LoadingFallback />}>
       <SearchPage />
     </React.Suspense>
   );
-}
+};
+export default PageWrapper;

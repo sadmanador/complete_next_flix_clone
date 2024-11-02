@@ -1,5 +1,6 @@
 "use client";
 import { Video } from "@/types";
+import { Box } from "@mui/material";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import { useEffect, useState } from "react";
 const DetailsMoviePage = () => {
   const pathname = usePathname();
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   const movieId = pathname.split("/").pop();
 
@@ -35,8 +36,8 @@ const DetailsMoviePage = () => {
 
   return (
 
-      <div
-        style={{
+      <Box
+        sx={{
           backgroundColor: "black",
           height: "100vh",
           display: "flex",
@@ -60,7 +61,7 @@ const DetailsMoviePage = () => {
         ) : (
           <p style={{ color: "white" }}>Trailer not available</p>
         )}
-      </div>
+      </Box>
   );
 };
 

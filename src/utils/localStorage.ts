@@ -1,6 +1,6 @@
 import { MediaItem } from "@/types";
 
-export default function handleAddToLocalStorage(item: MediaItem) {
+const handleAddToLocalStorage = (item: MediaItem) => {
   const existingItems: MediaItem[] = JSON.parse(
     localStorage.getItem("favoriteItems") || "[]"
   );
@@ -14,9 +14,9 @@ export default function handleAddToLocalStorage(item: MediaItem) {
     existingItems.push(item);
     localStorage.setItem("favoriteItems", JSON.stringify(existingItems));
   }
-}
+};
 
-export function handleRemoveFromLocalStorage(item: MediaItem) {
+const handleRemoveFromLocalStorage = (item: MediaItem) => {
   const existingItems: MediaItem[] = JSON.parse(
     localStorage.getItem("favoriteItems") || "[]"
   );
@@ -27,9 +27,9 @@ export function handleRemoveFromLocalStorage(item: MediaItem) {
   );
 
   localStorage.setItem("favoriteItems", JSON.stringify(updatedItems));
-}
+};
 
-export function isItemInLocalStorage(id: number, type: string): boolean {
+const isItemInLocalStorage = (id: number, type: string): boolean => {
   const existingItems: MediaItem[] = JSON.parse(
     localStorage.getItem("favoriteItems") || "[]"
   );
@@ -37,4 +37,7 @@ export function isItemInLocalStorage(id: number, type: string): boolean {
   return existingItems.some(
     (existingItem) => existingItem.id === id && existingItem.type === type
   );
-}
+};
+
+export default handleAddToLocalStorage;
+export { handleRemoveFromLocalStorage, isItemInLocalStorage };

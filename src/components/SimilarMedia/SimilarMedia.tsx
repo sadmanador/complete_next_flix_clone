@@ -6,7 +6,7 @@ import SimilarMediaCard from "../SimilarMediaCard/SimilarMediaCard";
 
 const SimilarMedia = ({ id }: SimilarMediaProps) => {
   const [similarMovies, setSimilarMovies] = useState<Media[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchSimilarMovies = async () => {

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 const MyListPage: React.FC = () => {
 
   const [movies, setMovies] = useState<Media[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
 

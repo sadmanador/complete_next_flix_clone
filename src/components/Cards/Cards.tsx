@@ -19,19 +19,23 @@ const Cards = ({
   removeMovie,
 }: CardsProps): React.ReactElement => {
   const [genres, setGenres] = useState<Genre[]>([]);
-  const [isHovered, setIsHovered] = useState(false);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
   const [, setError] = useState<string | null>(null);
+
   const [isMuted, setIsMuted] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+  
   const router = useRouter();
   const { title, vote_average, genre_ids, id, backdrop_path } = item;
   const image = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+
 
   useEffect(() => {
     setIsMounted(true);

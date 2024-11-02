@@ -1,7 +1,9 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from "axios";
 
-export default function getInstance(): AxiosInstance {
+const getInstance = (): AxiosInstance => {
   return axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
+    baseURL: "https://api.themoviedb.org/3",
   });
-}
+};
+
+export default getInstance;
