@@ -15,13 +15,12 @@ import ModalComp from "../Modal/Modal";
 const Banner: React.FC = () => {
   const [media, setMedia] = useState<Media | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
-  
+
   const [isMuted, setIsMuted] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-
 
   const router = useRouter();
 
@@ -73,6 +72,7 @@ const Banner: React.FC = () => {
         sx={{
           position: "relative",
           width: "100%",
+          height: { md: "75vh" },
         }}
       >
         {trailerKey ? (
@@ -113,7 +113,7 @@ const Banner: React.FC = () => {
             <Box
               sx={{
                 position: "absolute",
-                bottom: "30%",
+                bottom: { xs: "5%", md: "30%" },
                 right: "0",
               }}
             >
@@ -137,7 +137,7 @@ const Banner: React.FC = () => {
                   backgroundColor: "rgba(0, 0, 0, 0.5)",
                   color: "white",
                   fontSize: "16px",
-                  padding: ".5rem 3rem .5rem .5rem",
+                  padding: { xs: ".5rem", md: ".5rem 3rem .5rem .5rem" },
                   borderRadius: "0",
                 }}
               >
@@ -194,7 +194,7 @@ const Banner: React.FC = () => {
           </Typography>
           <Box
             sx={{
-              display: { xs: "block", md: "flex" },
+              display: "flex",
               flexDirection: "row",
               gap: "10px",
               margin: "0.3rem 0",

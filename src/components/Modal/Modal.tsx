@@ -103,6 +103,7 @@ const ModalComp = ({
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      
       sx={{
         marginTop: "2rem",
         overflow: "auto",
@@ -111,9 +112,10 @@ const ModalComp = ({
       <Box
         sx={{
           position: "absolute",
-          top: "50%",
+          top: { xs: "40%", md: "%50" },
           left: "50%",
           transform: "translate(-50%, -50%)",
+          width: { xs: "90%", md: "75%", lg: "60%" },
           backgroundColor: "#141414",
           boxShadow: 24,
           height: "65vh",
@@ -165,7 +167,13 @@ const ModalComp = ({
               alignItems: "baseline",
             }}
           >
-            <Box sx={{ display: {xs:"block",md:"flex"}, gap: 2, alignItems: "baseline" }}>
+            <Box
+              sx={{
+                display:  "flex" ,
+                gap: {md:2},
+                alignItems: "baseline",
+              }}
+            >
               <Link style={{ textDecoration: "none" }} href={`/movie/${id}`}>
                 <Button label="Play" filled Icon={Play} />
               </Link>
@@ -178,7 +186,7 @@ const ModalComp = ({
               <Button Icon={Dislike} rounded />
             </Box>
           </Box>
-          <Box sx={{ position: "absolute", right: "0", bottom: "0", p: 6 }}>
+          <Box sx={{ position: "absolute", right: "0", bottom: "0", p: {xs:2, md:6} }}>
             <Button
               Icon={isMuted ? Mute : Unmute}
               rounded

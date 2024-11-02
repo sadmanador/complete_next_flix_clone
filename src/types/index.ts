@@ -5,7 +5,9 @@ import { IconType } from "react-icons";
 export type Maybe<T> = T | null;
 export type ImageType = "poster" | "original";
 
-
+export interface SliderButtonProps {
+  isRight: boolean;
+}
 
 export interface DialogProps {
   visible: boolean;
