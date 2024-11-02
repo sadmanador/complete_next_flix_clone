@@ -1,31 +1,33 @@
 "use client";
 import { Video } from "@/types";
-import { Box } from "@mui/material";
-import axios from "axios";
+import { getMovie } from "@/utils/apiService";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const DetailsMoviePage = () => {
   const pathname = usePathname();
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const movieId = pathname.split("/").pop();
 
   const loadTrailer = async () => {
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos`,
-      {
-        params: {
-          api_key: process.env.NEXT_PUBLIC_TMDB_KEY,
-        },
-      }
+    const res = await getMovie(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos`
     );
-    const trailer = response.data.results.find(
-      (video: Video) => video.type === "Trailer"
-    );
-    setTrailerKey(trailer ? trailer.key : null);
-    setLoading(false);
+
+    if (res.error) {
+      setError(res.error.message);
+      setLoading(false);
+    } else {
+      const trailer = (res.data?.results as unknown as Video[]).find(
+        (video) => video.type === "Trailer"
+      );
+      setTrailerKey(trailer?.key ?? null);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -35,33 +37,41 @@ const DetailsMoviePage = () => {
   }, [movieId]);
 
   return (
-
-      <Box
-        sx={{
-          backgroundColor: "black",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {loading ? (
-          <p style={{ color: "white" }}>Loading trailer...</p>
-        ) : trailerKey ? (
-          <iframe
-            src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          ></iframe>
-        ) : (
-          <p style={{ color: "white" }}>Trailer not available</p>
-        )}
-      </Box>
+    <Box
+      sx={{
+        backgroundColor: "black",
+        height: "85vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: "4rem"
+      }}
+    >
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="inherit" />
+        </Box>
+      ) : error ? (
+        <Typography color="error" variant="h6">
+          {error}
+        </Typography>
+      ) : trailerKey ? (
+        <iframe
+          src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        ></iframe>
+      ) : (
+        <Typography color="white" variant="h6">
+          Trailer not available
+        </Typography>
+      )}
+    </Box>
   );
 };
 

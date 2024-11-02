@@ -1,21 +1,11 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Breakpoint } from "../config/breakpoints";
 import { MutableRefObject } from "react";
 import { IconType } from "react-icons";
 
 export type Maybe<T> = T | null;
 export type ImageType = "poster" | "original";
 
-export interface DimensionDetail {
-  dimension: {
-    height: number;
-    width: number;
-  };
-  breakpoint: Breakpoint;
-  isMobile: boolean;
-  isTablet: boolean;
-  isDesktop: boolean;
-}
+
 
 export interface DialogProps {
   visible: boolean;
