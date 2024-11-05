@@ -67,15 +67,8 @@ export interface MoviesResponse {
   page: number;
   total_results: number;
   total_pages: number;
-  genres?: [];
+  genres?: Genre[];
   results: Media[];
-}
-
-export interface Section {
-  heading: string;
-  endpoint: string;
-  defaultCard?: boolean;
-  topList?: boolean;
 }
 
 export interface Video {
@@ -103,11 +96,10 @@ export interface ChildrenProvider {
 }
 
 export interface MovieSectionProps {
-  defaultCard?: boolean;
   heading: string;
-  topList?: boolean;
   endpoint: string;
-  mediaType?: string;
+  loading?: boolean;
+  setLoading?: (loading: boolean) => void;
 }
 
 export interface NavbarProps {
@@ -161,8 +153,8 @@ export interface ApiResponse<T> {
 }
 
 export interface SpinnerContextProps {
-  loading: boolean; 
-  setLoading: (loading: boolean) => void; 
-  error: string | null; 
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  error: string | null;
   setError: (error: string | null) => void;
 }

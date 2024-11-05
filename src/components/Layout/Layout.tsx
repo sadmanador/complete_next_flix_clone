@@ -16,7 +16,13 @@ const Layout: React.FC<ChildrenProvider> = ({ children }) => {
       }}
     >
       <Navbar />
-      <Box>{children}</Box>
+      <Box
+        sx={{
+          flex: 1,
+        }}
+      >
+        {children}
+      </Box>
       <Footer />
     </Box>
   );

@@ -16,8 +16,8 @@ const Banner: React.FC = () => {
   const [media, setMedia] = useState<Media | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
 
-  const [isMuted, setIsMuted] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);

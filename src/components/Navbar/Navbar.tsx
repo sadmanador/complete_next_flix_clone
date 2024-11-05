@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 const pages = [
   "Home",
@@ -32,14 +32,10 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const router = useRouter();
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [showClearIcon, setShowClearIcon] = React.useState("none");
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showClearIcon, setShowClearIcon] = useState<string>("none");
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -74,25 +70,31 @@ const Navbar = () => {
     if (event.key === "Enter" && searchQuery.trim()) {
       event.preventDefault();
       router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-      // setSearchQuery("");
-      // setShowClearIcon("none");
     }
   };
 
-  const menuItemStyles = {
-    opacity: 0.7,
-    cursor: "pointer",
-    padding: "0.6rem 0.9rem",
-    "&:hover": {
-      borderColor: "#fff",
-    },
-  };
-
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "#000", top: 0 }}>
+    <AppBar
+      position="sticky"
+      sx={{
+        backgroundColor: "rgba(0,0,0,0.65)",
+        top: 0,
+        transition: "background-color 0.3s",
+        "&:hover": {
+          backgroundColor: "#000",
+          opacity: 1,
+        },
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Image width={100} height={50} src={"/assets/logo.png"} alt="Logo" />
+          <Image
+            width={100}
+            height={50}
+            src={"/assets/logo.png"}
+            alt="Logo"
+            style={{ position: "relative", zIndex: 1 }}
+          />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -143,7 +145,18 @@ const Navbar = () => {
                         color: "black",
                       }}
                     >
-                      <Box sx={menuItemStyles}>{page}</Box>
+                      <Box
+                        sx={{
+                          opacity: 0.9,
+                          cursor: "pointer",
+                          padding: "0.6rem 0.9rem",
+                          "&:hover": {
+                            borderColor: "#fff",
+                          },
+                        }}
+                      >
+                        {page}
+                      </Box>
                     </Link>
                   </Typography>
                 </MenuItem>
@@ -164,7 +177,19 @@ const Navbar = () => {
                   color: "#ffffff",
                 }}
               >
-                <Box sx={menuItemStyles}>{page}</Box>
+                <Box
+                  sx={{
+                    opacity: 0.9,
+                    cursor: "pointer",
+                    padding: "0.6rem 0.9rem",
+                    "&:hover": {
+                      fontWeight: 500,
+                      borderColor: "#fff",
+                    },
+                  }}
+                >
+                  {page}
+                </Box>
               </Link>
             ))}
           </Box>

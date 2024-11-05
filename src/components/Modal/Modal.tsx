@@ -29,9 +29,9 @@ const ModalComp: React.FC<ModalProps> = ({
   modalData,
   enableGenres,
 }): React.ReactElement => {
-  const [, setLoading] = useState(true);
+  const [, setLoading] = useState<boolean>(true);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
   const {
     id,
     backdrop_path,
@@ -43,7 +43,7 @@ const ModalComp: React.FC<ModalProps> = ({
     release_date,
     adult,
   } = modalData;
-  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  const [isInLocalStorage, setIsInLocalStorage] = useState<boolean>(false);
 
   const banner = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 

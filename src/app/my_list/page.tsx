@@ -6,11 +6,9 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 const MyListPage: React.FC = () => {
-
   const [movies, setMovies] = useState<Media[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
 
   const loadMovies = async () => {
     setLoading(true);
@@ -49,7 +47,6 @@ const MyListPage: React.FC = () => {
 
   return (
     <>
-
       <Box
         display="flex"
         flexDirection="column"
@@ -76,7 +73,9 @@ const MyListPage: React.FC = () => {
             <CircularProgress color="inherit" />
           </Box>
         ) : error ? (
-          <Typography color="red">{error}</Typography>
+          <Typography color="red" sx={{ pl: 6 }}>
+            {error}
+          </Typography>
         ) : (
           <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
             {movies

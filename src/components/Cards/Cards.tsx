@@ -18,11 +18,11 @@ const Cards: React.FC<CardsProps> = ({ item, enableGenres, removeMovie }) => {
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [, setError] = useState<string | null>(null);
 
-  const [isMuted, setIsMuted] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isInLocalStorage, setIsInLocalStorage] = useState(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [isInLocalStorage, setIsInLocalStorage] = useState<boolean>(false);
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);

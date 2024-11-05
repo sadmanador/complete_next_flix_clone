@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 const getInstance = (): AxiosInstance => {
   return axios.create({
-    baseURL: "https://api.themoviedb.org/3",
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   });
 };
 

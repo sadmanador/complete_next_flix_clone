@@ -9,14 +9,12 @@ const DetailsMoviePage = () => {
   const pathname = usePathname();
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const movieId = pathname.split("/").pop();
 
   const loadTrailer = async () => {
-    const res = await getMovie(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos`
-    );
+    const res = await getMovie(`/movie/${movieId}/videos`);
 
     if (res.error) {
       setError(res.error.message);
@@ -44,7 +42,7 @@ const DetailsMoviePage = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: "4rem"
+        marginBottom: "4rem",
       }}
     >
       {loading ? (
