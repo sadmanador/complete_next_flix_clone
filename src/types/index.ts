@@ -159,3 +159,10 @@ export interface ApiResponse<T> {
   data?: T;
   error?: RequestError | undefined;
 }
+
+export interface SpinnerContextProps {
+  loading: boolean; 
+  setLoading: (loading: boolean) => void; 
+  error: string | null; 
+  setError: (error: string | null) => void;
+}
