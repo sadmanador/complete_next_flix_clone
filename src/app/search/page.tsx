@@ -1,18 +1,10 @@
 "use client";
-
 import Cards from "@/components/Cards/Cards";
 import { Media } from "@/types";
 import { getMovie } from "@/utils/apiService";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
-// Create a loading fallback component
-const LoadingFallback = () => (
-  <Box display="flex" justifyContent="center">
-    <CircularProgress color="inherit" />
-  </Box>
-);
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
@@ -42,57 +34,67 @@ const SearchPage = () => {
   }, [query]);
 
   return (
-    <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        p={2}
-        bgcolor="black"
+    <Box
+      display="flex"
+      flexDirection="column"
+      p={2}
+      bgcolor="black"
+      sx={{
+        textTransform: "capitalize",
+        marginTop: { xs: 0, sm: 2 },
+      }}
+    >
+      <Typography
+        component="strong"
         sx={{
-          textTransform: "capitalize",
-          marginTop: { xs: 0, sm: 2 },
+          fontSize: "1.2rem",
+          marginLeft: "3rem",
+          padding: "0.5rem 0",
+          width: "fit-content",
+          zIndex: 1,
+          marginBottom: ".85rem",
         }}
       >
-        <Typography
-          component="strong"
-          sx={{
-            fontSize: "1.2rem",
-            marginLeft: "3rem",
-            padding: "0.5rem 0",
-            width: "fit-content",
-            zIndex: 1,
-            marginBottom: ".85rem",
-          }}
-        >
-          More to explore:
-        </Typography>
-        {loading ? (
-          <LoadingFallback />
-        ) : error ? (
-          <Typography color="red">{error}</Typography>
-        ) : (
-          <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
-            {movies
-              .filter(
-                (movie) =>
-                  movie.poster_path !== null && movie.backdrop_path !== null
-              )
-              .map((movie) => (
-                <Cards key={movie.id} item={movie} enableGenres={false} />
-              ))}
-          </Box>
-        )}
-      </Box>
-    </>
+        More to explore:
+      </Typography>
+
+      {loading && (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
+
+      {!loading && error && <Typography color="red">{error}</Typography>}
+
+      {!loading && !error && (
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
+          {movies
+            .filter(
+              (movie) =>
+                movie.poster_path !== null && movie.backdrop_path !== null
+            )
+            .map((movie) => (
+              <Cards key={movie.id} item={movie} enableGenres={false} />
+            ))}
+        </Box>
+      )}
+    </Box>
   );
 };
 
-// Wrap SearchPage in Suspense in the parent component or in the route
+
 const PageWrapper = () => {
   return (
-    <React.Suspense fallback={<LoadingFallback />}>
+    <React.Suspense
+      fallback={
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="inherit" />
+        </Box>
+      }
+    >
       <SearchPage />
     </React.Suspense>
   );
 };
+
 export default PageWrapper;

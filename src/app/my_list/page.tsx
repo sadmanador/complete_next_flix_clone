@@ -46,52 +46,54 @@ const MyListPage: React.FC = () => {
   };
 
   return (
-    <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        p={2}
-        bgcolor="#141414"
-        sx={{ textTransform: "capitalize" }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      p={2}
+      bgcolor="#141414"
+      sx={{ textTransform: "capitalize" }}
+    >
+      <Typography
+        component="strong"
+        sx={{
+          fontSize: "1.2rem",
+          marginLeft: "3rem",
+          padding: "0.5rem 0",
+          width: "fit-content",
+          zIndex: 1,
+          marginBottom: ".85rem",
+        }}
       >
-        <Typography
-          component="strong"
-          sx={{
-            fontSize: "1.2rem",
-            marginLeft: "3rem",
-            padding: "0.5rem 0",
-            width: "fit-content",
-            zIndex: 1,
-            marginBottom: ".85rem",
-          }}
-        >
-          My Movie List
-        </Typography>
+        My Movie List
+      </Typography>
 
-        {loading ? (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress color="inherit" />
-          </Box>
-        ) : error ? (
-          <Typography color="red" sx={{ pl: 6 }}>
-            {error}
-          </Typography>
-        ) : (
-          <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
-            {movies
-              .filter((movie) => movie.poster_path !== null)
-              .map((movie) => (
-                <Cards
-                  key={movie.id}
-                  item={movie}
-                  removeMovie={removeMovie}
-                  enableGenres={true}
-                />
-              ))}
-          </Box>
-        )}
-      </Box>
-    </>
+      {loading && (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
+
+      {!loading && error && (
+        <Typography color="red" sx={{ pl: 6 }}>
+          {error}
+        </Typography>
+      )}
+
+      {!loading && !error && (
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2}>
+          {movies
+            .filter((movie) => movie.poster_path !== null)
+            .map((movie) => (
+              <Cards
+                key={movie.id}
+                item={movie}
+                removeMovie={removeMovie}
+                enableGenres={true}
+              />
+            ))}
+        </Box>
+      )}
+    </Box>
   );
 };
 

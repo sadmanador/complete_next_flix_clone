@@ -45,15 +45,17 @@ const DetailsMoviePage = () => {
         marginBottom: "4rem",
       }}
     >
-      {loading ? (
+      {loading && (
         <Box display="flex" justifyContent="center">
           <CircularProgress color="inherit" />
         </Box>
-      ) : error ? (
+      )}
+      {!loading && error && (
         <Typography color="error" variant="h6">
           {error}
         </Typography>
-      ) : trailerKey ? (
+      )}
+      {!loading && !error && trailerKey && (
         <iframe
           src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
           frameBorder="0"
@@ -64,7 +66,8 @@ const DetailsMoviePage = () => {
             height: "100%",
           }}
         ></iframe>
-      ) : (
+      )}
+      {!loading && !error && !trailerKey && (
         <Typography color="white" variant="h6">
           Trailer not available
         </Typography>
