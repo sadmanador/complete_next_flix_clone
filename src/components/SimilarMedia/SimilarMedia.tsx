@@ -50,7 +50,7 @@ const SimilarMedia: React.FC<SimilarMediaProps> = ({ id }) => {
             .filter((movie) => movie.poster_path)
             .map((item) => <SimilarMediaCard key={item.id} item={item} />)
         ) : (
-          <Typography>No similar movies found.</Typography>
+          <Typography color="red">No similar movies found.</Typography>
         )}
       </Box>
     </Box>
