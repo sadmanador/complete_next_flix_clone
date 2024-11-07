@@ -1,20 +1,8 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { MutableRefObject } from "react";
 import { IconType } from "react-icons";
-
-export type Maybe<T> = T | null;
-export type ImageType = "poster" | "original";
 
 export interface SliderButtonProps {
   isRight: boolean;
-}
-
-export interface DialogProps {
-  visible: boolean;
-  classname?: string;
-  onClose: () => void;
-  dialogRef: MutableRefObject<HTMLDivElement | null>;
-  children: React.ReactNode;
 }
 
 export interface ButtonProps {
@@ -63,14 +51,6 @@ export interface Media {
   genres?: Genre[];
 }
 
-export interface MoviesResponse {
-  page: number;
-  total_results: number;
-  total_pages: number;
-  genres?: Genre[];
-  results: Media[];
-}
-
 export interface Video {
   id: string;
   key: string;
@@ -85,14 +65,12 @@ export interface MediaItem {
   title: string;
 }
 
-export interface FeatureCardProps {
-  index: number;
-  item: Media;
-  mediaType: string;
-}
-
-export interface ChildrenProvider {
-  children: React.ReactNode;
+export interface MoviesResponse {
+  page: number;
+  total_results: number;
+  total_pages: number;
+  genres?: Genre[];
+  results: Media[];
 }
 
 export interface MovieSectionProps {
@@ -100,31 +78,6 @@ export interface MovieSectionProps {
   endpoint: string;
   loading?: boolean;
   setLoading?: (loading: boolean) => void;
-}
-
-export interface NavbarProps {
-  isScrolled: boolean;
-}
-
-export interface SimilarMediaProps {
-  id: number;
-}
-
-export interface TopMoviesProps {
-  item: Media;
-  removeMovie: (id: number) => void;
-}
-
-export interface ModalProps {
-  modalData: Media;
-  modalOpen: boolean;
-  enableGenres: boolean;
-  handleClose: () => void;
-}
-
-export interface AudioControl {
-  mute: () => void;
-  unMute: () => void;
 }
 
 export interface RenderGenreProps {
@@ -157,4 +110,27 @@ export interface SpinnerContextProps {
   setLoading: (loading: boolean) => void;
   error: string | null;
   setError: (error: string | null) => void;
+}
+
+export interface ChildrenProvider {
+  children: React.ReactNode;
+}
+
+export interface ModalProps {
+  modalData: Media;
+  modalOpen: boolean;
+  enableGenres: boolean;
+  handleClose: () => void;
+}
+
+export interface Video {
+  id: string;
+  key: string;
+  type: string;
+  name: string;
+  site: string;
+}
+
+export interface SimilarMediaProps {
+  id: number;
 }
