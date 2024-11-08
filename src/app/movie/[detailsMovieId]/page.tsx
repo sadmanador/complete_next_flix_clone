@@ -21,7 +21,7 @@ const DetailsMoviePage = () => {
       setError(res.error.message);
       setLoading(false);
     } else {
-      const trailer = (res.data?.results as Video[]).find(
+      const trailer = (res.data?.results as unknown as Video[]).find(
         (video) => video.type === "Trailer"
       );
       setTrailerKey(trailer?.key ?? null);
