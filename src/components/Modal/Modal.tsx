@@ -22,6 +22,7 @@ import {
 import handleAddToLocalStorage, {
   handleRemoveFromLocalStorage,
 } from "@/utils/localStorage";
+import ReactPlayer from "react-player";
 
 const ModalComp: React.FC<ModalProps> = ({
   modalOpen,
@@ -79,23 +80,12 @@ const ModalComp: React.FC<ModalProps> = ({
   };
 
   const toggleMute = () => {
-    setIsMuted((prev) => {
-      const newMutedState = !prev;
-      if (trailerUrl) {
-        setTrailerUrl(
-          trailerUrl.replace(
-            `mute=${prev ? 1 : 0}`,
-            `mute=${newMutedState ? 1 : 0}`
-          )
-        );
-      }
-      return newMutedState;
-    });
+    setIsMuted((prev) => !prev);
   };
 
   useEffect(() => {
     fetchTrailer();
-  }, [id, isMuted]);
+  }, [id]);
 
   return (
     <Modal
@@ -138,14 +128,13 @@ const ModalComp: React.FC<ModalProps> = ({
 
         <Box sx={{ position: "relative" }}>
           {trailerUrl ? (
-            <iframe
+            <ReactPlayer
+              url={trailerUrl}
+              muted={isMuted}
+              playing={true}
+              loop
               width="100%"
               height="400px"
-              src={trailerUrl}
-              title="Trailer"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
               style={{ borderRadius: "8px 8px 0 0" }}
             />
           ) : (
@@ -157,6 +146,7 @@ const ModalComp: React.FC<ModalProps> = ({
               style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
           )}
+
           <Box
             sx={{
               p: 6,

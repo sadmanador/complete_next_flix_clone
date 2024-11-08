@@ -1,21 +1,16 @@
 import { getMovie } from "@/utils/apiService";
-import {
-  Box,
-  IconButton,
-  Button as MuiButton,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Button as MuiButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Media } from "../../types";
 import { Info, Mute, Play, Unmute } from "../../utils/icons";
 import { useEffect, useState } from "react";
 import ModalComp from "../Modal/Modal";
+import ReactPlayer from "react-player/youtube";
 
 const Banner: React.FC = () => {
   const [media, setMedia] = useState<Media | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
-
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -38,21 +33,12 @@ const Banner: React.FC = () => {
     const result = await getMovie("/movie/top_rated?language=en-US&page=1");
 
     if (result && result.data && result.data.results) {
-      const randomIndex = Math.floor(
-        Math.random() * result.data.results.length
-      );
+      const randomIndex = Math.floor(Math.random() * result.data.results.length);
       const selectedMedia: Media = result.data.results[randomIndex];
       setMedia(selectedMedia);
 
-      const trailerResponse = await getMovie(
-        `/movie/${selectedMedia.id}/videos`
-      );
-
-      if (
-        trailerResponse &&
-        trailerResponse.data &&
-        Array.isArray(trailerResponse.data.results)
-      ) {
+      const trailerResponse = await getMovie(`/movie/${selectedMedia.id}/videos`);
+      if (trailerResponse && trailerResponse.data && Array.isArray(trailerResponse.data.results)) {
         const videos = trailerResponse.data.results;
         const trailer = videos.find((video) => video.type === "Trailer");
         setTrailerKey(trailer?.key || null);
@@ -85,21 +71,26 @@ const Banner: React.FC = () => {
               overflow: "hidden",
             }}
           >
-            <iframe
-              src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=${
-                isMuted ? 1 : 0
-              }&controls=0&loop=1&modestbranding=1&showinfo=0`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media;"
-              allowFullScreen
+            <ReactPlayer
+              url={`https://www.youtube.com/watch?v=${trailerKey}`}
+              playing
+              muted={isMuted}
+              controls={false}
+              width="100%"
+              height="100%"
+              config={{
+                playerVars: {
+                  autoplay: 1,
+                  loop: 1,
+                  modestbranding: 1,
+                  showinfo: 0,
+                },
+              }}
               style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "100%",
-                height: "100%",
                 transform: "translate(-50%, -50%) scale(1.2)", // Scale to fill without bars
-                border: "none",
-                display: "block",
               }}
             />
             <Box

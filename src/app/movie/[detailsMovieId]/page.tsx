@@ -4,6 +4,7 @@ import { getMovie } from "@/utils/apiService";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ReactPlayer from "react-player/youtube";
 
 const DetailsMoviePage = () => {
   const pathname = usePathname();
@@ -20,7 +21,7 @@ const DetailsMoviePage = () => {
       setError(res.error.message);
       setLoading(false);
     } else {
-      const trailer = (res.data?.results as unknown as Video[]).find(
+      const trailer = (res.data?.results as Video[]).find(
         (video) => video.type === "Trailer"
       );
       setTrailerKey(trailer?.key ?? null);
@@ -56,16 +57,20 @@ const DetailsMoviePage = () => {
         </Typography>
       )}
       {!loading && !error && trailerKey && (
-        <iframe
-          src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{
-            width: "100%",
-            height: "100%",
+        <ReactPlayer
+          url={`https://www.youtube.com/watch?v=${trailerKey}`}
+          playing
+          controls
+          width="100%"
+          height="100%"
+          config={{
+            playerVars: {
+              autoplay: 1,
+              modestbranding: 1,
+              showinfo: 0,
+            },
           }}
-        ></iframe>
+        />
       )}
       {!loading && !error && !trailerKey && (
         <Typography color="white" variant="h6">
