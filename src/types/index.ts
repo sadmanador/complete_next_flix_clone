@@ -123,14 +123,6 @@ export interface ModalProps {
   handleClose: () => void;
 }
 
-export interface Video {
-  id: string;
-  key: string;
-  type: string;
-  name: string;
-  site: string;
-}
-
 export interface SimilarMediaProps {
   id: number;
 }
